@@ -23,7 +23,7 @@ public class EmpresaServiceImpl implements EmpresaServis {
 
     @Override
     public EmpresaDtoRes createEmpresas(EmpresaDtoReq empresaDtoReq) {
-        Empresa empresa = empresaMapper.toEmpresa(empresaDtoReq);
+        Empresa empresa = empresaMapper.toEntity(empresaDtoReq);
         Empresa saved = empresaRepository.save(empresa);
         return empresaMapper.toDto(saved);
     }
@@ -41,11 +41,11 @@ public class EmpresaServiceImpl implements EmpresaServis {
                 .orElseThrow(() -> new RuntimeException("Empresa no encontrada con id: " + id));
 
         // Actualizamos los datos
-        empresaExistente.setNombre(empresaDtoReq.Nombre());
+        empresaExistente.setNombre(empresaDtoReq.nombre());
         empresaExistente.setCuit(empresaDtoReq.cuit());
         empresaExistente.setDireccion(empresaDtoReq.direccion());
         empresaExistente.setTelefono(empresaDtoReq.telefono());
-        empresaExistente.setEmail(empresaDtoReq.Email());
+        empresaExistente.setEmail(empresaDtoReq.email());
 
 
 

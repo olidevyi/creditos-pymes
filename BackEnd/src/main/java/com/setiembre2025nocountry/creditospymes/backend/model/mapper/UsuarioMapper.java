@@ -3,23 +3,26 @@ package com.setiembre2025nocountry.creditospymes.backend.model.mapper;
 import com.setiembre2025nocountry.creditospymes.backend.model.dto.UsuarioDtoRes;
 import com.setiembre2025nocountry.creditospymes.backend.model.dto.dtoReq.UsuarioDtoReq;
 import com.setiembre2025nocountry.creditospymes.backend.model.entity.Usuario;
+import org.springframework.stereotype.Component;
 
+@Component
 public class UsuarioMapper {
-    public UsuarioDtoRes toDto(Usuario usuario){
+    public UsuarioDtoRes toDto(Usuario u){
         return UsuarioDtoRes.builder()
-                .nombre(usuario.getNombre())
-                .email(usuario.getEmail())
-                .fechaRegistro(usuario.getFechaRegistro())
-                .passWord(usuario.getPassWord())
+                .id(u.getId())
+                .nombre(u.getNombre())
+                .email(u.getEmail())
+                .fechaRegistro(u.getFechaRegistro())
+                .fechaActualizacion(u.getFechaActualizacion())
+                .rol(u.getRol())
                 .build();
     }
-
-    public Usuario toUsuario(UsuarioDtoReq request){
+    public Usuario toEntity(UsuarioDtoReq r){
         return Usuario.builder()
-                .nombre(request.nombre())
-                .email(request.email())
-                .fechaRegistro(request.fechaRegistro())
+                .nombre(r.nombre())
+                .email(r.email())
+                .passWord(r.passWord())
+                .rol(r.rol())
                 .build();
     }
-
 }

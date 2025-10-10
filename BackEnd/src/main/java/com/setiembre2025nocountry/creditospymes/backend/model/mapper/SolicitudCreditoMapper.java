@@ -3,25 +3,27 @@ package com.setiembre2025nocountry.creditospymes.backend.model.mapper;
 import com.setiembre2025nocountry.creditospymes.backend.model.dto.SolicitudCreditoDtoRes;
 import com.setiembre2025nocountry.creditospymes.backend.model.dto.dtoReq.SolicitudCreditoDtoReq;
 import com.setiembre2025nocountry.creditospymes.backend.model.entity.SolicitudCredito;
+import org.springframework.stereotype.Component;
 
+@Component
 public class SolicitudCreditoMapper {
-    public SolicitudCreditoDtoRes toDto(SolicitudCredito solicitudCredito){
+    public SolicitudCreditoDtoRes toDto(SolicitudCredito s){
         return SolicitudCreditoDtoRes.builder()
-                .estadoSolicitud(solicitudCredito.getEstadoSolicitud())
-                .fechaActualizacion(solicitudCredito.getFechaActualizacion())
-                .fechaCreacion(solicitudCredito.getFechaCreacion())
-                .montoSolicitado(solicitudCredito.getMontoSolicitado())
-                .proposito(solicitudCredito.getProposito())
+                .id(s.getId())
+                .montoSolicitado(s.getMontoSolicitado())
+                .plazo(s.getPlazo())
+                .proposito(s.getProposito())
+                .estadoSolicitud(s.getEstadoSolicitud())
+                .fechaCreacion(s.getFechaCreacion())
+                .fechaActualizacion(s.getFechaActualizacion())
                 .build();
     }
-
-    public SolicitudCredito toSolicitudCredito(SolicitudCreditoDtoReq solicitudCreditoDtoReq){
+    public SolicitudCredito toEntity(SolicitudCreditoDtoReq r){
         return SolicitudCredito.builder()
-                .proposito(solicitudCreditoDtoReq.proposito())
-                .fechaCreacion(solicitudCreditoDtoReq.fechaCreacion())
-                .fechaActualizacion(solicitudCreditoDtoReq.fechaActualizacion())
-                .estadoSolicitud(solicitudCreditoDtoReq.estadoSolicitud())
-                .montoSolicitado(solicitudCreditoDtoReq.montoSolicitado())
+                .montoSolicitado(r.montoSolicitado())
+                .plazo(r.plazo())
+                .proposito(r.proposito())
+                .estadoSolicitud(r.estadoSolicitud())
                 .build();
     }
 }

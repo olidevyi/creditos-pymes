@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
@@ -18,11 +19,15 @@ import java.time.LocalTime;
 public class SolicitudCredito {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
+
     private Integer montoSolicitado;
-    private String Plazo;
+    private String plazo;
     private String proposito;
+
+    @Enumerated(EnumType.STRING)
     private EstadoSolicitud estadoSolicitud;
-    private LocalTime fechaCreacion;
-    private LocalTime fechaActualizacion;
+
+    private LocalDateTime fechaCreacion;
+    private LocalDateTime fechaActualizacion;
 }

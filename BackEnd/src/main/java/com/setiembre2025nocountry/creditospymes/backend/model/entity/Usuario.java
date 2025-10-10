@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -23,6 +24,11 @@ public class Usuario {
     private String nombre;
     private String email;
     private String passWord;
-    private LocalDate fechaRegistro;
+    @org.hibernate.annotations.CreationTimestamp
+    private LocalDateTime fechaRegistro;
+    @org.hibernate.annotations.UpdateTimestamp
+    private LocalDateTime fechaActualizacion;
+
+    @Enumerated(EnumType.STRING)
     private Rol rol;
 }

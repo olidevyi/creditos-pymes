@@ -1,11 +1,11 @@
 package com.setiembre2025nocountry.creditospymes.backend.model.dto.dtoReq;
 
+import com.setiembre2025nocountry.creditospymes.backend.model.ennum.Rol;
 import jakarta.validation.constraints.NotBlank;
 
-import java.time.LocalDate;
-
-public record UsuarioDtoReq(String nombre,
-                            String passWord,
-                            @NotBlank String email,
-                            LocalDate fechaRegistro) {
-}
+public record UsuarioDtoReq(
+        @NotBlank String nombre,
+        @NotBlank String email,
+        @NotBlank String passWord,
+        Rol rol
+) {}

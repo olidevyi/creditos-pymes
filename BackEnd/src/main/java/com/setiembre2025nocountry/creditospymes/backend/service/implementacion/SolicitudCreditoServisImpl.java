@@ -24,7 +24,7 @@ public class SolicitudCreditoServisImpl implements SolicitudCreditoServis {
 
     @Override
     public SolicitudCreditoDtoRes createSolicitud(SolicitudCreditoDtoReq solicitudDTOReq) {
-        SolicitudCredito solicitud = solicitudCreditoMapper.toSolicitudCredito(solicitudDTOReq);
+        SolicitudCredito solicitud = solicitudCreditoMapper.toEntity(solicitudDTOReq);
         solicitud = solicitudCreditoRepository.save(solicitud);
         return solicitudCreditoMapper.toDto(solicitud);
     }

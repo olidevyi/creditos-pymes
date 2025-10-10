@@ -15,8 +15,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class UsuarioServisImpl implements UsuarioServis {
-    @Autowired
-    private  UsuarioServis usuarioServis;
+
     @Autowired
     private UsuarioMapper usuarioMapper;
     @Autowired
@@ -24,7 +23,7 @@ public class UsuarioServisImpl implements UsuarioServis {
 
     @Override
     public UsuarioDtoRes createUser(UsuarioDtoReq userDTOReq) {
-        Usuario usuario = usuarioMapper.toUsuario(userDTOReq);
+        Usuario usuario = usuarioMapper.toEntity(userDTOReq);
         usuario = usuarioRepository.save(usuario);
         return usuarioMapper.toDto(usuario);
     }
