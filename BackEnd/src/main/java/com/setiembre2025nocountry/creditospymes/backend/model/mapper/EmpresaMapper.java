@@ -1,4 +1,3 @@
-// src/main/java/.../model/mapper/EmpresaMapper.java
 package com.setiembre2025nocountry.creditospymes.backend.model.mapper;
 
 import com.setiembre2025nocountry.creditospymes.backend.model.dto.EmpresaDtoRes;
@@ -9,24 +8,45 @@ import org.springframework.stereotype.Component;
 @Component
 public class EmpresaMapper {
     public EmpresaDtoRes toDto(Empresa e){
-        return EmpresaDtoRes.builder()
-                .id(e.getId())
-                .nombre(e.getNombre())
-                .razonSocial(e.getRazonSocial())
-                .email(e.getEmail())
-                .cuit(e.getCuit())
-                .direccion(e.getDireccion())
-                .telefono(e.getTelefono())
-                .build();
+        Long administradorId = e.getAdministradorResponsable() != null ? e.getAdministradorResponsable().getId() : null;
+        String administradorNombre = e.getAdministradorResponsable() != null
+                ? e.getAdministradorResponsable().getNombre() + " " + e.getAdministradorResponsable().getApellido()
+                : null;
+
+        return new EmpresaDtoRes(
+                e.getId(),
+                e.getNombre(),
+                e.getRazonSocial(),
+                e.getCuit(),
+                e.getEmail(),
+                e.getDireccion(),
+                e.getTelefono(),
+                e.getSector(),
+                e.getAnioFundacion(),
+                e.getNumeroEmpleados(),
+                e.getFacturacionAnualPromedio(),
+                e.getSitioWeb(),
+                e.getDescripcion(),
+                e.getFechaCreacion(),
+                e.getFechaActualizacion(),
+                administradorId,
+                administradorNombre
+        );
     }
     public Empresa toEntity(EmpresaDtoReq r){
-        return Empresa.builder()
-                .nombre(r.nombre())
-                .razonSocial(r.razonSocial())
-                .email(r.email())
-                .cuit(r.cuit())
-                .direccion(r.direccion())
-                .telefono(r.telefono())
-                .build();
+        Empresa empresa = new Empresa();
+        empresa.setNombre(r.nombre());
+        empresa.setRazonSocial(r.razonSocial());
+        empresa.setCuit(r.cuit());
+        empresa.setEmail(r.email());
+        empresa.setDireccion(r.direccion());
+        empresa.setTelefono(r.telefono());
+        empresa.setSector(r.sector());
+        empresa.setAnioFundacion(r.anioFundacion());
+        empresa.setNumeroEmpleados(r.numeroEmpleados());
+        empresa.setFacturacionAnualPromedio(r.facturacionAnualPromedio());
+        empresa.setSitioWeb(r.sitioWeb());
+        empresa.setDescripcion(r.descripcion());
+        return empresa;
     }
 }

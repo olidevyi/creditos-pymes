@@ -40,8 +40,16 @@ public class UsuarioServisImpl implements UsuarioServis {
                 .orElseThrow(() -> new ChangeSetPersister.NotFoundException());
 
         existingUser.setNombre(userDTOReq.nombre());
-        existingUser.setPassWord(userDTOReq.passWord());
+        existingUser.setApellido(userDTOReq.apellido());
+        existingUser.setFechaNacimiento(userDTOReq.fechaNacimiento());
         existingUser.setEmail(userDTOReq.email());
+        existingUser.setTelefono(userDTOReq.telefono());
+        existingUser.setDocumentoIdentidad(userDTOReq.documentoIdentidad());
+        existingUser.setPassword(userDTOReq.password());
+        if (userDTOReq.activo() != null) {
+            existingUser.setActivo(userDTOReq.activo());
+        }
+        existingUser.setRol(userDTOReq.rol());
 
 
         existingUser = usuarioRepository.save(existingUser);
