@@ -1,11 +1,9 @@
 package com.setiembre2025nocountry.creditospymes.backend.model.ennum;
 
-public enum EstadoSolicitud {
-    BORRADOR,
-    ENVIADA,
-    EN_REVISION,
-    OBSERVADA,
+public enum EstadoRevision {
+    PENDIENTE,
+    EN_PROCESO,
     APROBADA,
     RECHAZADA,
-    FIRMADA
+    REQUIERE_MAS_INFORMACION
 }

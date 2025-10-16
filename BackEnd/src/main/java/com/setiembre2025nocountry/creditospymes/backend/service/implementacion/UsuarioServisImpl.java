@@ -15,8 +15,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class UsuarioServisImpl implements UsuarioServis {
-    @Autowired
-    private  UsuarioServis usuarioServis;
+
     @Autowired
     private UsuarioMapper usuarioMapper;
     @Autowired
@@ -24,7 +23,7 @@ public class UsuarioServisImpl implements UsuarioServis {
 
     @Override
     public UsuarioDtoRes createUser(UsuarioDtoReq userDTOReq) {
-        Usuario usuario = usuarioMapper.toUsuario(userDTOReq);
+        Usuario usuario = usuarioMapper.toEntity(userDTOReq);
         usuario = usuarioRepository.save(usuario);
         return usuarioMapper.toDto(usuario);
     }
@@ -41,8 +40,16 @@ public class UsuarioServisImpl implements UsuarioServis {
                 .orElseThrow(() -> new ChangeSetPersister.NotFoundException());
 
         existingUser.setNombre(userDTOReq.nombre());
-        existingUser.setPassWord(userDTOReq.passWord());
+        existingUser.setApellido(userDTOReq.apellido());
+        existingUser.setFechaNacimiento(userDTOReq.fechaNacimiento());
         existingUser.setEmail(userDTOReq.email());
+        existingUser.setTelefono(userDTOReq.telefono());
+        existingUser.setDocumentoIdentidad(userDTOReq.documentoIdentidad());
+        existingUser.setPassword(userDTOReq.password());
+        if (userDTOReq.activo() != null) {
+            existingUser.setActivo(userDTOReq.activo());
+        }
+        existingUser.setRol(userDTOReq.rol());
 
 
         existingUser = usuarioRepository.save(existingUser);
