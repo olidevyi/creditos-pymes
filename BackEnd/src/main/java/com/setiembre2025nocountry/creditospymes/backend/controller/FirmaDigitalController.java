@@ -5,6 +5,7 @@ import com.setiembre2025nocountry.creditospymes.backend.exception.ResourceNotFou
 import com.setiembre2025nocountry.creditospymes.backend.model.dto.FirmaDigitalDtoRes;
 import com.setiembre2025nocountry.creditospymes.backend.model.dto.dtoReq.FirmaDigitalDtoReq;
 import com.setiembre2025nocountry.creditospymes.backend.service.FirmaDigitalServis;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class FirmaDigitalController {
     private FirmaDigitalServis firmaDigitalServis;
 
     @PostMapping
-    public ResponseEntity<FirmaDigitalDtoRes> create(@RequestBody FirmaDigitalDtoReq request) {
+    public ResponseEntity<FirmaDigitalDtoRes> create(@RequestBody @Valid FirmaDigitalDtoReq request) {
         FirmaDigitalDtoRes nueva = firmaDigitalServis.createFirmaDigital(request);
         return ResponseEntity.ok(nueva);
     }
@@ -35,7 +36,7 @@ public class FirmaDigitalController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FirmaDigitalDtoRes> update(@PathVariable Long id, @RequestBody FirmaDigitalDtoReq request) {
+    public ResponseEntity<FirmaDigitalDtoRes> update(@PathVariable Long id, @RequestBody @Valid FirmaDigitalDtoReq request) {
         try {
             FirmaDigitalDtoRes actualizada = firmaDigitalServis.updateFirmaDigital(id, request);
             return ResponseEntity.ok(actualizada);

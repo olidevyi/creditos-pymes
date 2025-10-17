@@ -5,6 +5,7 @@ import com.setiembre2025nocountry.creditospymes.backend.exception.ResourceNotFou
 import com.setiembre2025nocountry.creditospymes.backend.model.dto.EmpresaDtoRes;
 import com.setiembre2025nocountry.creditospymes.backend.model.dto.dtoReq.EmpresaDtoReq;
 import com.setiembre2025nocountry.creditospymes.backend.service.EmpresaServis;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class EmpresaController {
     private EmpresaServis empresaServis;
 
     @PostMapping
-    public ResponseEntity<EmpresaDtoRes> create(@RequestBody EmpresaDtoReq empresaDtoReq) {
+    public ResponseEntity<EmpresaDtoRes> create(@RequestBody @Valid EmpresaDtoReq empresaDtoReq) {
         EmpresaDtoRes nueva = empresaServis.createEmpresas(empresaDtoReq);
         return ResponseEntity.ok(nueva);
     }
@@ -36,7 +37,7 @@ public class EmpresaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EmpresaDtoRes> update(@PathVariable Long id, @RequestBody EmpresaDtoReq empresaDtoReq) {
+    public ResponseEntity<EmpresaDtoRes> update(@PathVariable Long id, @RequestBody @Valid EmpresaDtoReq empresaDtoReq) {
         try {
             EmpresaDtoRes actualizada = empresaServis.updateEmpresa(id, empresaDtoReq);
             return ResponseEntity.ok(actualizada);

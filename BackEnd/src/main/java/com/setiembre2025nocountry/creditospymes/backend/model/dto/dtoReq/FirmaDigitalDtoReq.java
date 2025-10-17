@@ -5,9 +5,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record FirmaDigitalDtoReq(
-        @NotNull Long solicitudId,
-        @NotNull Long firmanteId,
-        @NotBlank String hashFirma,
+        @NotNull(message = "Id de solicitud requerido!") Long solicitudId,
+        @NotNull(message = "Id firmante requerido!") Long firmanteId,
+        @NotBlank(message = "Hash firma requerido!") String hashFirma,
         EstadoFirmaDigital estado,
         String ipFirmante,
         String documentoFirmadoUrl

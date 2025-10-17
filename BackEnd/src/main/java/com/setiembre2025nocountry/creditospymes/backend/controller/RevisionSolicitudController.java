@@ -5,6 +5,7 @@ import com.setiembre2025nocountry.creditospymes.backend.exception.ResourceNotFou
 import com.setiembre2025nocountry.creditospymes.backend.model.dto.RevisionSolicitudDtoRes;
 import com.setiembre2025nocountry.creditospymes.backend.model.dto.dtoReq.RevisionSolicitudDtoReq;
 import com.setiembre2025nocountry.creditospymes.backend.service.RevisionSolicitudServis;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class RevisionSolicitudController {
     private RevisionSolicitudServis revisionSolicitudServis;
 
     @PostMapping
-    public ResponseEntity<RevisionSolicitudDtoRes> create(@RequestBody RevisionSolicitudDtoReq request) {
+    public ResponseEntity<RevisionSolicitudDtoRes> create(@RequestBody @Valid RevisionSolicitudDtoReq request) {
         RevisionSolicitudDtoRes nueva = revisionSolicitudServis.createRevisionSolicitud(request);
         return ResponseEntity.ok(nueva);
     }
@@ -35,7 +36,7 @@ public class RevisionSolicitudController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<RevisionSolicitudDtoRes> update(@PathVariable Long id, @RequestBody RevisionSolicitudDtoReq request) {
+    public ResponseEntity<RevisionSolicitudDtoRes> update(@PathVariable Long id, @RequestBody @Valid RevisionSolicitudDtoReq request) {
         try {
             RevisionSolicitudDtoRes actualizada = revisionSolicitudServis.updateRevisionSolicitud(id, request);
             return ResponseEntity.ok(actualizada);

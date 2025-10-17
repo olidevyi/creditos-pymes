@@ -5,6 +5,7 @@ import com.setiembre2025nocountry.creditospymes.backend.exception.ResourceNotFou
 import com.setiembre2025nocountry.creditospymes.backend.model.dto.SolicitudCreditoDtoRes;
 import com.setiembre2025nocountry.creditospymes.backend.model.dto.dtoReq.SolicitudCreditoDtoReq;
 import com.setiembre2025nocountry.creditospymes.backend.service.SolicitudCreditoServis;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.crossstore.ChangeSetPersister;
@@ -22,7 +23,7 @@ public class SolicitudCreditoController {
 
     // Crear solicitud de crédito
     @PostMapping
-    public ResponseEntity<SolicitudCreditoDtoRes> createSolicitud(@RequestBody SolicitudCreditoDtoReq solicitudDtoReq) {
+    public ResponseEntity<SolicitudCreditoDtoRes> createSolicitud(@RequestBody @Valid SolicitudCreditoDtoReq solicitudDtoReq) {
         SolicitudCreditoDtoRes nuevaSolicitud = solicitudCreditoServis.createSolicitud(solicitudDtoReq);
         return ResponseEntity.ok(nuevaSolicitud);
     }
@@ -45,7 +46,7 @@ public class SolicitudCreditoController {
     @PutMapping("/{id}")
     public ResponseEntity<SolicitudCreditoDtoRes> updateSolicitud(
             @PathVariable Long id,
-            @RequestBody SolicitudCreditoDtoReq solicitudDtoReq) throws ChangeSetPersister.NotFoundException {
+            @RequestBody @Valid SolicitudCreditoDtoReq solicitudDtoReq) throws ChangeSetPersister.NotFoundException {
         try {
             SolicitudCreditoDtoRes actualizada = solicitudCreditoServis.updateSolicitud(id, solicitudDtoReq);
             return ResponseEntity.ok(actualizada);

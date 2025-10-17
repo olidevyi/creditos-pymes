@@ -5,6 +5,7 @@ import com.setiembre2025nocountry.creditospymes.backend.exception.ResourceNotFou
 import com.setiembre2025nocountry.creditospymes.backend.model.dto.DocumentoDtoRes;
 import com.setiembre2025nocountry.creditospymes.backend.model.dto.dtoReq.DocumentoDtoReq;
 import com.setiembre2025nocountry.creditospymes.backend.service.DocumentoServis;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class DocumentoController {
     private DocumentoServis documentoServis;
 
     @PostMapping
-    public ResponseEntity<DocumentoDtoRes> create(@RequestBody DocumentoDtoReq request) {
+    public ResponseEntity<DocumentoDtoRes> create(@RequestBody @Valid DocumentoDtoReq request) {
         DocumentoDtoRes nuevo = documentoServis.createDocumento(request);
         return ResponseEntity.ok(nuevo);
     }

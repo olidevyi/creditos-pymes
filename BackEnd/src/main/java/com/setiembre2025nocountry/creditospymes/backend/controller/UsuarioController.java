@@ -4,6 +4,7 @@ import com.setiembre2025nocountry.creditospymes.backend.exception.ResourceNotFou
 import com.setiembre2025nocountry.creditospymes.backend.model.dto.UsuarioDtoRes;
 import com.setiembre2025nocountry.creditospymes.backend.model.dto.dtoReq.UsuarioDtoReq;
 import com.setiembre2025nocountry.creditospymes.backend.service.UsuarioServis;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class UsuarioController {
 
     //Crear usuario
     @PostMapping
-    public ResponseEntity<UsuarioDtoRes> createUser(@RequestBody UsuarioDtoReq usuarioDtoReq) {
+    public ResponseEntity<UsuarioDtoRes> createUser(@RequestBody @Valid UsuarioDtoReq usuarioDtoReq) {
         UsuarioDtoRes nuevoUsuario = usuarioServis.createUser(usuarioDtoReq);
         return ResponseEntity.ok(nuevoUsuario);
     }
@@ -41,7 +42,7 @@ public class UsuarioController {
 
     // Actualizar usuario
     @PutMapping("/{id}")
-    public ResponseEntity<UsuarioDtoRes> updateUser(@PathVariable Long id, @RequestBody UsuarioDtoReq usuarioDtoReq) {
+    public ResponseEntity<UsuarioDtoRes> updateUser(@PathVariable Long id, @RequestBody @Valid UsuarioDtoReq usuarioDtoReq) {
         try {
             UsuarioDtoRes actualizado = usuarioServis.updateUser(id, usuarioDtoReq);
             return ResponseEntity.ok(actualizado);

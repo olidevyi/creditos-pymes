@@ -4,9 +4,9 @@ import com.setiembre2025nocountry.creditospymes.backend.model.ennum.EstadoRevisi
 import jakarta.validation.constraints.NotNull;
 
 public record RevisionDtoReq(
-        @NotNull Long solicitudId,
-        @NotNull Long administradorId,
+        @NotNull(message = "Id de solicitud requerido!") Long solicitudId,
+        @NotNull(message = "Id de administrador requerido!") Long administradorId,
         Long documentoId,
-        @NotNull EstadoRevision estado,
+        @NotNull(message = "Estado de revision requerido!") EstadoRevision estado,
         String comentarios
 ) {}
