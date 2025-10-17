@@ -1,5 +1,6 @@
 package com.setiembre2025nocountry.creditospymes.backend.controller;
 
+import com.setiembre2025nocountry.creditospymes.backend.exception.ResourceNotFoundException;
 import com.setiembre2025nocountry.creditospymes.backend.model.dto.UsuarioDtoRes;
 import com.setiembre2025nocountry.creditospymes.backend.model.dto.dtoReq.UsuarioDtoReq;
 import com.setiembre2025nocountry.creditospymes.backend.service.UsuarioServis;
@@ -29,6 +30,9 @@ public class UsuarioController {
     public ResponseEntity<UsuarioDtoRes> getUserById(@PathVariable Long id) {
         try {
             UsuarioDtoRes usuario = usuarioServis.getUserById(id);
+            if (usuario == null) {
+                throw new ResourceNotFoundException("usuario", "id", id);
+            }
             return ResponseEntity.ok(usuario);
         } catch (ChangeSetPersister.NotFoundException e) {
             return ResponseEntity.notFound().build();
@@ -61,6 +65,9 @@ public class UsuarioController {
     @GetMapping
     public ResponseEntity<List<UsuarioDtoRes>> getAllUsers() {
         List<UsuarioDtoRes> usuarios = usuarioServis.getAllUsers();
+        if (usuarios == null || usuarios.isEmpty()) {
+            throw new ResourceNotFoundException("usuarios");
+        }
         return ResponseEntity.ok(usuarios);
     }
 }
