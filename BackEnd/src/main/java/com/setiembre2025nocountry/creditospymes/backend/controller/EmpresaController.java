@@ -1,5 +1,8 @@
+// EmpresaController.java
 package com.setiembre2025nocountry.creditospymes.backend.controller;
 
+import com.setiembre2025nocountry.creditospymes.backend.exception.BadRequestException;
+import com.setiembre2025nocountry.creditospymes.backend.exception.ResourceNotFoundException;
 import com.setiembre2025nocountry.creditospymes.backend.model.dto.EmpresaDtoRes;
 import com.setiembre2025nocountry.creditospymes.backend.model.dto.dtoReq.EmpresaDtoReq;
 import com.setiembre2025nocountry.creditospymes.backend.service.EmpresaServis;
@@ -10,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,6 +48,7 @@ public class EmpresaController {
     @GetMapping("/{id}")
     public ResponseEntity<EmpresaDtoRes> getById(@PathVariable Long id) {
         EmpresaDtoRes empresa = empresaServis.getEmpresasById(id);
+        if (empresa == null) throw new ResourceNotFoundException("empresa", "id", id);
         return ResponseEntity.ok(empresa);
     }
 
@@ -55,8 +60,12 @@ public class EmpresaController {
             })
     @PutMapping("/{id}")
     public ResponseEntity<EmpresaDtoRes> update(@PathVariable Long id, @Valid @RequestBody EmpresaDtoReq empresaDtoReq) {
-        EmpresaDtoRes actualizada = empresaServis.updateEmpresa(id, empresaDtoReq);
-        return ResponseEntity.ok(actualizada);
+        try {
+            EmpresaDtoRes actualizada = empresaServis.updateEmpresa(id, empresaDtoReq);
+            return ResponseEntity.ok(actualizada);
+        } catch (DataAccessException e) {
+            throw new BadRequestException(e.getMessage());
+        }
     }
 
     @Operation(summary = "Eliminar empresa", responses = {
@@ -65,8 +74,12 @@ public class EmpresaController {
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        empresaServis.deleteEmpresas(id);
-        return ResponseEntity.noContent().build();
+        try {
+            empresaServis.deleteEmpresas(id);
+            return ResponseEntity.noContent().build();
+        } catch (DataAccessException e) {
+            throw new BadRequestException(e.getMessage());
+        }
     }
 
     @Operation(summary = "Listar empresas",
@@ -75,6 +88,7 @@ public class EmpresaController {
     @GetMapping
     public ResponseEntity<List<EmpresaDtoRes>> getAll() {
         List<EmpresaDtoRes> empresas = empresaServis.getAllEmpresas();
+        if (empresas == null || empresas.isEmpty()) throw new ResourceNotFoundException("empresas");
         return ResponseEntity.ok(empresas);
     }
 }

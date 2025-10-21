@@ -90,6 +90,29 @@ public class DocumentoServisImpl implements DocumentoServis {
         return documentoMapper.toDto(doc);
     }
 
+    @Transactional
+    public DocumentoDtoRes createDocumento(DocumentoDtoReq meta) {
+        var solicitud = solicitudCreditoRepository.findById(meta.solicitudId())
+                .orElseThrow(() -> new EntityNotFoundException("Solicitud no encontrada: " + meta.solicitudId()));
+        var usuario = usuarioRepository.findById(meta.cargadoPorId())
+                .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado: " + meta.cargadoPorId()));
+
+        Documento doc = new Documento();
+        documentoMapper.applyMeta(doc, meta);        // solo metadatos de negocio
+        doc.setSolicitudCredito(solicitud);
+        doc.setCargadoPor(usuario);
+
+        // Inicializar campos de archivo “vacío”
+        doc.setNombreOriginal(null);
+        doc.setTipoContenido(null);
+        doc.setTamano(0L);           // usa null si tu entidad lo permite
+        doc.setStorageKey(null);
+        doc.setSha256(null);
+
+        documentoRepository.save(doc);
+        return documentoMapper.toDto(doc);
+    }
+
     @Override
     public DocumentoDtoRes getDocumentoById(Long id) {
         Documento documento = documentoRepository.findById(id)

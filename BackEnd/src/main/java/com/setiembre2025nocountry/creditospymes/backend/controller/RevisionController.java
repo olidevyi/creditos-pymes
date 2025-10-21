@@ -1,5 +1,8 @@
+// RevisionController.java
 package com.setiembre2025nocountry.creditospymes.backend.controller;
 
+import com.setiembre2025nocountry.creditospymes.backend.exception.BadRequestException;
+import com.setiembre2025nocountry.creditospymes.backend.exception.ResourceNotFoundException;
 import com.setiembre2025nocountry.creditospymes.backend.model.dto.RevisionDtoRes;
 import com.setiembre2025nocountry.creditospymes.backend.model.dto.dtoReq.RevisionDtoReq;
 import com.setiembre2025nocountry.creditospymes.backend.service.RevisionServis;
@@ -10,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,6 +48,7 @@ public class RevisionController {
     @GetMapping("/{id}")
     public ResponseEntity<RevisionDtoRes> getById(@PathVariable Long id) {
         RevisionDtoRes revision = revisionServis.getRevisionById(id);
+        if (revision == null) throw new ResourceNotFoundException("revision", "id", id);
         return ResponseEntity.ok(revision);
     }
 
@@ -55,8 +60,12 @@ public class RevisionController {
             })
     @PutMapping("/{id}")
     public ResponseEntity<RevisionDtoRes> update(@PathVariable Long id, @Valid @RequestBody RevisionDtoReq request) {
-        RevisionDtoRes actualizada = revisionServis.updateRevision(id, request);
-        return ResponseEntity.ok(actualizada);
+        try {
+            RevisionDtoRes actualizada = revisionServis.updateRevision(id, request);
+            return ResponseEntity.ok(actualizada);
+        } catch (DataAccessException e) {
+            throw new BadRequestException(e.getMessage());
+        }
     }
 
     @Operation(summary = "Eliminar revisión", responses = {
@@ -65,8 +74,12 @@ public class RevisionController {
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        revisionServis.deleteRevision(id);
-        return ResponseEntity.noContent().build();
+        try {
+            revisionServis.deleteRevision(id);
+            return ResponseEntity.noContent().build();
+        } catch (DataAccessException e) {
+            throw new BadRequestException(e.getMessage());
+        }
     }
 
     @Operation(summary = "Listar revisiones",
@@ -75,6 +88,7 @@ public class RevisionController {
     @GetMapping
     public ResponseEntity<List<RevisionDtoRes>> getAll() {
         List<RevisionDtoRes> revisiones = revisionServis.getAllRevisiones();
+        if (revisiones == null || revisiones.isEmpty()) throw new ResourceNotFoundException("revisiones");
         return ResponseEntity.ok(revisiones);
     }
 }

@@ -1,9 +1,12 @@
+// DocumentoController.java
 package com.setiembre2025nocountry.creditospymes.backend.controller;
 
+import com.setiembre2025nocountry.creditospymes.backend.exception.BadRequestException;
+import com.setiembre2025nocountry.creditospymes.backend.exception.ResourceNotFoundException;
 import com.setiembre2025nocountry.creditospymes.backend.model.dto.DocumentoDtoRes;
 import com.setiembre2025nocountry.creditospymes.backend.model.dto.dtoReq.DocumentoDtoReq;
-import com.setiembre2025nocountry.creditospymes.backend.service.DocumentoServis;
 import com.setiembre2025nocountry.creditospymes.backend.storage.InputStreamWithMeta;
+import com.setiembre2025nocountry.creditospymes.backend.service.DocumentoServis;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -12,6 +15,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -34,9 +38,22 @@ public class DocumentoController {
         this.documentoServis = documentoServis;
     }
 
+    @Operation(summary = "Crear documento (solo metadatos)",
+            responses = @ApiResponse(responseCode = "200", description = "Creado",
+                    content = @Content(schema = @Schema(implementation = DocumentoDtoRes.class))))
+    @PostMapping
+    public ResponseEntity<DocumentoDtoRes> create(@Valid @RequestBody DocumentoDtoReq request) {
+        try {
+            DocumentoDtoRes nuevo = documentoServis.createDocumento(request);
+            return ResponseEntity.ok(nuevo);
+        } catch (DataAccessException e) {
+            throw new BadRequestException(e.getMessage());
+        }
+    }
+
     @Operation(
-            summary = "Subir documento",
-            description = "Carga un archivo y sus metadatos. Content-Type: multipart/form-data",
+            summary = "Subir documento con archivo",
+            description = "Carga archivo + metadatos. Content-Type: multipart/form-data",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Documento subido",
                             content = @Content(schema = @Schema(implementation = DocumentoDtoRes.class))),
@@ -51,7 +68,7 @@ public class DocumentoController {
     }
 
     @Operation(
-            summary = "Reemplazar archivo de un documento",
+            summary = "Reemplazar archivo",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Archivo reemplazado",
                             content = @Content(schema = @Schema(implementation = DocumentoDtoRes.class))),
@@ -77,7 +94,11 @@ public class DocumentoController {
     public ResponseEntity<DocumentoDtoRes> updateMeta(
             @PathVariable Long id,
             @Valid @RequestBody DocumentoDtoReq meta) {
-        return ResponseEntity.ok(documentoServis.updateDocumentoMeta(id, meta));
+        try {
+            return ResponseEntity.ok(documentoServis.updateDocumentoMeta(id, meta));
+        } catch (DataAccessException e) {
+            throw new BadRequestException(e.getMessage());
+        }
     }
 
     @Operation(
@@ -90,7 +111,9 @@ public class DocumentoController {
     )
     @GetMapping("/{id}")
     public ResponseEntity<DocumentoDtoRes> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(documentoServis.getDocumentoById(id));
+        DocumentoDtoRes doc = documentoServis.getDocumentoById(id);
+        if (doc == null) throw new ResourceNotFoundException("documento", "id", id);
+        return ResponseEntity.ok(doc);
     }
 
     @Operation(
@@ -99,7 +122,9 @@ public class DocumentoController {
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = DocumentoDtoRes.class)))))
     @GetMapping
     public ResponseEntity<List<DocumentoDtoRes>> getAll() {
-        return ResponseEntity.ok(documentoServis.getAllDocumentos());
+        List<DocumentoDtoRes> docs = documentoServis.getAllDocumentos();
+        if (docs == null || docs.isEmpty()) throw new ResourceNotFoundException("documentos");
+        return ResponseEntity.ok(docs);
     }
 
     @Operation(summary = "Eliminar documento", responses = {
@@ -108,12 +133,16 @@ public class DocumentoController {
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        documentoServis.deleteDocumento(id);
-        return ResponseEntity.noContent().build();
+        try {
+            documentoServis.deleteDocumento(id);
+            return ResponseEntity.noContent().build();
+        } catch (DataAccessException e) {
+            throw new BadRequestException(e.getMessage());
+        }
     }
 
     @Operation(
-            summary = "Descargar archivo del documento",
+            summary = "Descargar archivo",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Binario",
                             content = @Content(mediaType = "application/octet-stream",

@@ -3,12 +3,15 @@ package com.setiembre2025nocountry.creditospymes.backend.model.dto.dtoReq;
 import com.setiembre2025nocountry.creditospymes.backend.model.ennum.EstadoDocumento;
 import com.setiembre2025nocountry.creditospymes.backend.model.ennum.TipoDocumento;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 
 public record DocumentoDtoReq(
-        @NotNull TipoDocumento tipoDocumento,
-        EstadoDocumento estadoDocumento,
+        @NotBlank(message = "Nombre requerido!") String nombreOriginal,
+        @NotBlank(message = "Ruta de almacenamiento requerida!") String rutaAlmacenamiento,
+        @NotNull(message = "Tipo de documento requerido!") TipoDocumento tipoDocumento,
+        @NotNull(message = "Estado de documento requerido!") EstadoDocumento estadoDocumento,
         String observaciones,
-        @NotNull Long solicitudId,
-        @NotNull Long cargadoPorId
+        @NotNull(message = "Id de Solicitud requerido!") Long solicitudId,
+        @NotNull(message = "Id de carga requerido!") Long cargadoPorId
 ) {
 }

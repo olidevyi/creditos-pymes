@@ -4,9 +4,9 @@ import com.setiembre2025nocountry.creditospymes.backend.model.ennum.ResultadoRev
 import jakarta.validation.constraints.NotNull;
 
 public record RevisionSolicitudDtoReq(
-        @NotNull Long solicitudId,
-        @NotNull Long administradorId,
+        @NotNull(message = "Id de solicitud requerido!") Long solicitudId,
+        @NotNull(message = "Id de administrador requerido!") Long administradorId,
         Long documentoId,
-        @NotNull ResultadoRevision resultado,
+        @NotNull(message = "Resultado de revision requerido!") ResultadoRevision resultado,
         String comentarios
 ) {}

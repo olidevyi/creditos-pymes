@@ -8,13 +8,13 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 public record UsuarioDtoReq(
-        @NotBlank String nombre,
-        @NotBlank String apellido,
-        @NotNull LocalDate fechaNacimiento,
-        @NotBlank @Email String email,
-        @NotBlank String telefono,
-        @NotBlank String documentoIdentidad,
-        @NotBlank String password,
+        @NotBlank(message = "Nombre requerido!") String nombre,
+        @NotBlank(message = "Apellido requerido!") String apellido,
+        @NotNull(message = "Fecha de nacimiento requerido!") LocalDate fechaNacimiento,
+        @NotBlank(message = "Correo requerido!") @Email String email,
+        @NotBlank(message = "Telefono requerido!") String telefono,
+        @NotBlank(message = "Documento de identidad requerido!") String documentoIdentidad,
+        @NotBlank(message = "Contraseña requerida!") String password,
         Rol rol,
         Boolean activo
 ) {}

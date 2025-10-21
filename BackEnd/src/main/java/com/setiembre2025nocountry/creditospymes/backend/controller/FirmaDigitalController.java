@@ -1,3 +1,4 @@
+// FirmaDigitalController.java
 package com.setiembre2025nocountry.creditospymes.backend.controller;
 
 import com.setiembre2025nocountry.creditospymes.backend.model.dto.FirmaDigitalDtoRes;

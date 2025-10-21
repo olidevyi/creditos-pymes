@@ -9,6 +9,9 @@ import java.io.IOException;
 import java.util.List;
 
 public interface DocumentoServis {
+
+    public DocumentoDtoRes createDocumento(DocumentoDtoReq meta);
+
     DocumentoDtoRes upload(MultipartFile file, DocumentoDtoReq meta) throws IOException;
 
     DocumentoDtoRes getDocumentoById(Long id);
