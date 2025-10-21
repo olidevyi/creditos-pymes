@@ -1,17 +1,24 @@
 package com.setiembre2025nocountry.creditospymes.backend.model.dto;
 
-import com.setiembre2025nocountry.creditospymes.backend.model.ennum.EstadoFirmaDigital;
-
-import java.time.LocalDateTime;
-
 public record FirmaDigitalDtoRes(
         Long id,
+        Long documentoId,
         Long solicitudId,
         Long firmanteId,
         String firmanteNombre,
-        EstadoFirmaDigital estado,
-        LocalDateTime fechaFirma,
-        String hashFirma,
+        String estado,
+        String signatureFormat,
+        String digestAlg,
+        String signAlg,
+        String policyOid,
+        String docSha256,
+        String signatureStorageKey,
+        String tsaTokenStorageKey,
+        String certSubject,
+        String certIssuer,
+        String certSerial,
+        String certFingerprint,
         String ipFirmante,
-        String documentoFirmadoUrl
+        String userAgent,
+        java.time.LocalDateTime fechaFirma
 ) {}
