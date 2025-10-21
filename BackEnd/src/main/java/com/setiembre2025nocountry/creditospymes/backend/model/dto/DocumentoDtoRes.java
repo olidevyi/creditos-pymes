@@ -8,7 +8,9 @@ import java.time.LocalDateTime;
 public record DocumentoDtoRes(
         Long id,
         String nombreOriginal,
-        String rutaAlmacenamiento,
+        String tipoContenido,
+        Long tamano,
+        String sha256,
         TipoDocumento tipoDocumento,
         EstadoDocumento estadoDocumento,
         String observaciones,
@@ -16,4 +18,5 @@ public record DocumentoDtoRes(
         Long solicitudId,
         Long cargadoPorId,
         String cargadoPorNombre
-) {}
+) {
+}
